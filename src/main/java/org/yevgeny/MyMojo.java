@@ -52,7 +52,8 @@ public class MyMojo extends AbstractMojo
             m = Agent.getClass().getMethod("getExecutionData", boolean.class);
             m.setAccessible(true);
             long startTime = System.currentTimeMillis();
-            for (int i=0; i<1000; i++) {
+            int totalExecs = 1000;
+            for (int i=0; i<totalExecs; i++) {
                 this.hitCount = 0;
                 byte[] a = (byte[]) m.invoke(Agent, false);
                 InputStream is = new ByteArrayInputStream(a);
@@ -71,8 +72,9 @@ public class MyMojo extends AbstractMojo
             }
             long stopTime = System.currentTimeMillis();
             long elapsedTime = stopTime - startTime;
-            System.out.println(elapsedTime);
-            System.out.println(hitCount);
+            System.out.printf("Total Time: %d ms\n", elapsedTime);
+            System.out.printf("Execs/s: %f\n", (double)totalExecs/(double) elapsedTime*1000);
+            System.out.printf("Total Hit Count: %d\n", hitCount);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
